@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180503163614) do
+ActiveRecord::Schema.define(version: 20180503164527) do
 
   create_table "users", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -28,6 +28,7 @@ ActiveRecord::Schema.define(version: 20180503163614) do
     t.datetime "updated_at", null: false
     t.integer "user_id"
     t.integer "amount", limit: 5
+    t.string "currency"
     t.index ["user_id"], name: "index_wallets_on_user_id"
   end
 
