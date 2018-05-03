@@ -15,6 +15,8 @@ gem 'puma', '~> 3.7'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
 gem 'jbuilder', '~> 2.5'
 gem 'money-rails', '~>1'
+gem 'google_currency'
+gem 'rspec'
 
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
