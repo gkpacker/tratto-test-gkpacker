@@ -8,17 +8,21 @@ class WalletCentral < ApplicationRecord
     wallet_to_receive = if user_to_receive.has_wallet?(currency)
                           user_to_receive.wallets.find_by(currency: currency)
                         else
-                          Wallet.create!(currency: 'USD', amount_cents: 0, user_id: user_to_receive.id)
+                          Wallet.create(currency: 'USD', amount_cents: 0, user_id: user_to_receive.id)
                           user_to_receive.wallets.find_by(currency: 'USD')
                         end
     if wallet_to_transfer.update!(amount_cents: wallet_to_transfer.amount_cents - amount.to_d)
       old_currency = wallet_to_transfer.currency
       new_currency = wallet_to_receive.currency
-      sum = convert(old_currency, new_currency, amount.to_d) unless old_currency == new_currency
-      sum = amount.to_d
-      wallet_to_receive.amount_cents += sum
+      received_amount = if old_currency == new_currency
+                          amount.to_d
+                        else
+                          convert(old_currency, new_currency, amount.to_d)
+                        end
+      wallet_to_receive.amount_cents += received_amount
       wallet_to_receive.save!
     end
+    return true
   end
 
   def self.convert(old_currency, new_currency, amount_cents)
