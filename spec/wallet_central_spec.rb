@@ -25,7 +25,7 @@ RSpec.describe WalletCentral do
     expect(WalletCentral.transfer('Gabriel', 'Carolina', 'USD', 100)).to eq 'Carolina must have a wallet'
   end
 
-  it "transfer money to an account and transfer back" do
+  it "transfer money to an account and transfer back without changing value" do
     Wallet.create(currency: 'USD', amount_cents: 200.35, user_id: @user.id)
     Wallet.create(currency: 'USD', amount_cents: 0, user_id: @receiver.id)
 
@@ -51,5 +51,16 @@ RSpec.describe WalletCentral do
 
 
     expect(WalletCentral.transfer('Gabriel', 'Carolina', 'BRL', 300)).to eq "Gabriel doesnt have enought money to transfer"
+  end
+  it 'convert USD to EUR' do
+    usd_to_eur = WalletCentral.convert('USD', 'EUR', 1)
+
+    expect(usd_to_eur).to eq 0.8
+  end
+
+  it 'convert USD to BRL' do
+    usd_to_brl = WalletCentral.convert('USD', 'BRL', 1)
+
+    expect(usd_to_brl).to eq 3.16
   end
 end
