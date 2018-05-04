@@ -22,10 +22,7 @@ RSpec.describe WalletCentral do
   it "transfer money to an account without wallet" do
     Wallet.create(currency: 'USD', amount_cents: 200, user_id: @user.id)
 
-    WalletCentral.transfer('Gabriel', 'Carolina', 'USD', 100)
-    receiver_wallet = Wallet.find_by(user_id: @receiver.id)
-
-    expect(receiver_wallet.currency).to eq 'USD'
+    expect(WalletCentral.transfer('Gabriel', 'Carolina', 'USD', 100)).to eq 'Carolina must have a wallet'
   end
 
   it "transfer money to an account and transfer back" do
