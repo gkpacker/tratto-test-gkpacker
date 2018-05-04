@@ -26,6 +26,12 @@ class WalletCentral < ApplicationRecord
     end
   end
 
+  def self.output(attr = {})
+
+  end
+
+  private
+
   def self.convert(old_currency, new_currency, amount_cents)
     conversion_rate = Money.default_bank.get_rate(
       old_currency.to_sym, new_currency.to_sym
