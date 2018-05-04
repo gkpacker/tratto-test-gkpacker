@@ -25,7 +25,7 @@ RSpec.describe WalletCentral do
     expect(WalletCentral.transfer('Gabriel', 'Carolina', 'USD', 100)).to eq 'Carolina must have a wallet'
   end
 
-  it "transfer money to an account and transfer back" do
+  it "transfer money to an account and transfer back without changing value" do
     Wallet.create(currency: 'USD', amount_cents: 200.35, user_id: @user.id)
     Wallet.create(currency: 'USD', amount_cents: 0, user_id: @receiver.id)
 
