@@ -2,7 +2,7 @@ class WalletCentral < ApplicationRecord
   def self.transfer(from, to, currency, amount)
     user_to_transfer = User.find_by(name: from)
     wallet_to_transfer = user_to_transfer.has_wallet?(currency)
-    return "error" unless wallet_to_transfer
+    return "#{from} must have a wallet with #{currency} currency" unless wallet_to_transfer
     user_to_receive = User.find_by(name: to)
 
     wallet_to_receive = if user_to_receive.has_wallet?(currency)
@@ -11,7 +11,7 @@ class WalletCentral < ApplicationRecord
                           Wallet.create(currency: 'USD', amount_cents: 0, user_id: user_to_receive.id)
                           user_to_receive.wallets.find_by(currency: 'USD')
                         end
-    if wallet_to_transfer.update!(amount_cents: wallet_to_transfer.amount_cents - amount.to_d)
+    if wallet_to_transfer.update(amount_cents: wallet_to_transfer.amount_cents - amount.to_d)
       old_currency = wallet_to_transfer.currency
       new_currency = wallet_to_receive.currency
       received_amount = if old_currency == new_currency
@@ -20,9 +20,10 @@ class WalletCentral < ApplicationRecord
                           convert(old_currency, new_currency, amount.to_d)
                         end
       wallet_to_receive.amount_cents += received_amount
-      wallet_to_receive.save!
+      wallet_to_receive.save
+    else
+      return "#{from} doesnt have enought money to transfer"
     end
-    return true
   end
 
   def self.convert(old_currency, new_currency, amount_cents)

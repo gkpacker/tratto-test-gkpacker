@@ -25,5 +25,4 @@ RSpec.describe Wallet, type: :model do
     wallet = Wallet.create(currency: 'USD', amount_cents: 200)
     expect(wallet).to_not be_valid
   end
-
 end
